@@ -13,3 +13,5 @@ bundle install
 -- edit audioboo-oauth.rb to include your API consumer key & secret
 ./audioboo-oauth.rb
 ```
+
+You can obtain your consumer key & secret from your [Audioboo services page](http://audioboo.fm/account/services)
