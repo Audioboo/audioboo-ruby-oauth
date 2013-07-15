@@ -3,6 +3,12 @@ require 'oauth'
 require 'pp'
 require 'json'
 
+# This command-line tool uses OAuth to fetch a access token key & secret from audioboo.fm
+# Verification is done 'out-of-band' - the user copies a pin from the authorization page
+# on audioboo, and pastes it back into the command line tool.
+# Once the access token is obtained, it can be used to authenticate as that user for any
+# future API calls.
+
 # Fill in your consumer API key & secret here.  You can obtain an API key from http://audioboo.fm/account/services
 KEY = ""
 SECRET = ""
@@ -34,4 +40,9 @@ else
   access_token = OAuth::AccessToken.new(consumer, ARGV[0], ARGV[1])
 end
 
+
+puts "Fetching your account details from http://api.audioboo.fm/account"
 pp JSON.parse(access_token.get('/account').body)
+
+# See https://github.com/audioboo/api/blob/master/sections/reference_index.md for
+# all the other calls you can make.
