@@ -17,7 +17,7 @@ Edit consumer_key.rb to include your API consumer key & secret.  You can obtain 
 Usage
 =====
 
-`audioboo-oauth-cli.rb` is a command-line tool that uses 'out-of-band' verification, typically used in serverless apps like a desktop client.
+`audioboo-oauth-cli.rb` is a command-line tool that uses 'out-of-band' verification, usually used in serverless apps like a desktop client.
 
 ```
 bundle exec ruby audioboo-oauth-cli.rb
