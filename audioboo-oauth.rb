@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'oauth'
 require 'pp'
 require 'json'
