@@ -1,7 +1,7 @@
 audioboo-ruby-oauth
 ===================
 
-Some examples using the Ruby OAuth gem to talk to audioboo.fm.
+Some examples using the Ruby OAuth gem to talk to the [audioboo.fm](http://audioboo.fm) API.
 
 Installation
 ============
@@ -30,4 +30,4 @@ bundle exec ruby audioboo-oauth-cli.rb
 bundle exec ruby audioboo-oauth-webapp.rb
 ```
 
-You can then view the web app at http://localhost:4567
+You can then view the web app at [http://localhost:4567](http://localhost:4567)
