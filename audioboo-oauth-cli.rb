@@ -19,7 +19,7 @@ if ARGV.size == 0
   puts "Fetching request token..."
   request_token = consumer.get_request_token(oauth_callback: 'oob')
 
-  puts "Got a request token. #{request_token.inspect}"
+  puts "Got a request token."
   puts "Open #{request_token.authorize_url} to authorize your account"
 
   begin
