@@ -3,6 +3,7 @@ require 'bundler/setup'
 require 'oauth'
 require 'sinatra'
 require 'json'
+require 'net/http/post/multipart'
 require_relative './consumer_key'
 
 # This minimal web app uses OAuth to fetch a access token key & secret from audioboo.fm
@@ -62,9 +63,30 @@ get '/show_audioboo_account' do
   <<-HTML
     <h1>Got access token!</h1>
     <p>#{access_token.token} / #{access_token.secret}</p>
+    <hr/>
+    <form action='/upload' enctype='multipart/form-data' method=POST>
+      Want to upload an audio file?
+      <input type=file name=audio_file>
+      <input type=submit value=Upload>
+    </form>
+    <hr/>
     <h2>Your audioboo account:</h2>
     <pre>#{CGI.escape_html JSON.pretty_generate(account_info) }</pre>
     <img src="#{image_url}"/>
   HTML
 end
 
+
+post "/upload" do
+  local_file = params['audio_file']
+  clip_params = {
+    'audio_clip[title]' => 'my first boo',
+    'audio_clip[uploaded_data]' => UploadIO.new(local_file[:tempfile], local_file[:type], local_file[:filename])
+  }
+
+  request = Net::HTTP::Post::Multipart.new('/account/audio_clips', clip_params)
+  access_token.sign!(request)
+  response = Net::HTTP.start('api.audioboo.fm', 80){|http| http.request(request)}
+
+  response.body
+end
