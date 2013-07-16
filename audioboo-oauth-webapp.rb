@@ -8,8 +8,11 @@ require_relative './consumer_key'
 # This minimal web app uses OAuth to fetch a access token key & secret from audioboo.fm
 
 def consumer
-  @consumer ||= OAuth::Consumer.new(KEY,SECRET, site: "http://api.audioboo.fm")
-  # @consumer.http.set_debug_output($stderr)
+  OAuth::Consumer.new(KEY,SECRET, site: "http://api.audioboo.fm")
+end
+def access_token
+  return nil unless session[:access_token]&&session[:access_secret]
+  OAuth::AccessToken.new(consumer, session[:access_token], session[:access_secret])
 end
 
 enable :sessions
@@ -41,10 +44,17 @@ get '/oauth_callback' do
   session.delete(:request_token) # these can't be used any more
   session.delete(:request_secret)
   access_token = request_token.get_access_token(oauth_verifier: params['oauth_verifier'])
+  session[:access_token] = access_token.token
+  session[:access_secret] = access_token.secret
 
   # Now that you've got an access token & secret you can use it to make authenticated calls to the Audioboo API.
   # See https://github.com/audioboo/api/blob/master/sections/reference_index.md for
   # all the other calls you can make.
+  redirect to('/show_audioboo_account')
+end
+
+
+get '/show_audioboo_account' do
   account_response = access_token.get('http://api.audioboo.fm/account')
 
   account_info = JSON.parse(account_response.body)
