@@ -1,46 +1,35 @@
 #!/usr/bin/env ruby
 require 'bundler/setup'
-require 'oauth'
+require 'oauth2'
 require 'pp'
 require 'json'
 
 require_relative './consumer_key'
 
-# This command-line tool uses OAuth to fetch a access token key & secret from audioboo.fm
-# Verification is done 'out-of-band' - the user copies a pin from the authorization page
-# on audioboo, and pastes it back into the command line tool.
-# Once the access token is obtained, it can be used to authenticate as that user for any
-# future API calls.
+client = OAuth2::Client.new(
+  KEY,
+  SECRET,
+  site: "https://api.audioboom.com",
+  authorize_url: "/authorize",
+  token_url: "/token"
+)
 
-consumer = OAuth::Consumer.new(KEY,SECRET, site: "http://api.audioboo.fm")
-# consumer.http.set_debug_output($stderr)
+puts "Open #{client.auth_code.authorize_url} to authorize your account"
 
-if ARGV.size == 0
-  puts "Fetching request token..."
-  request_token = consumer.get_request_token(oauth_callback: 'oob')
+begin
+  puts "Enter the pin:"
+  pin = gets.chomp
 
-  puts "Got a request token."
-  puts "Open #{request_token.authorize_url} to authorize your account"
-
-  begin
-    puts "Enter the pin verifier:"
-    verifier = gets.chomp
-  
-    puts "Fetching an access token..."
-    access_token = request_token.get_access_token(oauth_verifier: verifier)
-  rescue
-    p $!
-    retry
-  end
-  puts "Got access token & secret: #{access_token.token} #{access_token.secret}"
-else
-
-  access_token = OAuth::AccessToken.new(consumer, ARGV[0], ARGV[1])
+  puts "Fetching an access token..."
+  token = client.auth_code.get_token(pin)
+rescue
+  p $!
+  retry
 end
+puts "Got access token: #{token.token}"
 
-
-puts "Fetching your account details from http://api.audioboo.fm/account"
-pp JSON.parse(access_token.get('/account').body)
+puts "Fetching your account details from http://api.audioboom.com/account"
+pp JSON.parse(token.get('/account').body)
 
 # See https://github.com/audioboo/api/blob/master/sections/reference_index.md for
 # all the other calls you can make.

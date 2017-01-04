@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'oauth'
+gem 'oauth2'
 gem 'sinatra'
 gem 'multipart-post'
