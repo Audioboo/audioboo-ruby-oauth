@@ -6,10 +6,10 @@ require 'json'
 require 'net/http/post/multipart'
 require_relative './consumer_key'
 
-# This minimal web app uses OAuth to fetch a access token key & secret from audioboo.fm
+# This minimal web app uses OAuth to fetch a access token key & secret from audioboom.com
 
 def consumer
-  OAuth::Consumer.new(KEY,SECRET, site: "http://api.audioboo.fm")
+  OAuth::Consumer.new(KEY,SECRET, site: "http://api.audioboom.com")
 end
 def access_token
   return nil unless session[:access_token]&&session[:access_secret]
@@ -56,7 +56,7 @@ end
 
 
 get '/show_audioboo_account' do
-  account_response = access_token.get('http://api.audioboo.fm/account')
+  account_response = access_token.get('https://api.audioboom.com/account')
 
   account_info = JSON.parse(account_response.body)
   image_url = account_info['body']['user']['urls']['image']
@@ -86,7 +86,7 @@ post "/upload" do
 
   request = Net::HTTP::Post::Multipart.new('/account/audio_clips', clip_params)
   access_token.sign!(request)
-  response = Net::HTTP.start('api.audioboo.fm', 80){|http| http.request(request)}
+  response = Net::HTTP.start('api.audioboom.com', 443){|http| http.use_ssl = true; http.request(request)}
 
   response.body
 end

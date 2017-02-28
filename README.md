@@ -1,7 +1,7 @@
 audioboo-ruby-oauth
 ===================
 
-Some examples using the Ruby OAuth gem to talk to the [audioboo.fm](http://audioboo.fm) API.
+Some examples using the Ruby OAuth gem to talk to the [audioboom.com](http://audioboom.com) API.
 
 Installation
 ============
@@ -12,7 +12,7 @@ cd audioboo-ruby-oauth
 bundle install
 ```
 
-Edit consumer_key.rb to include your API consumer key & secret.  You can obtain these from your [Audioboo services page](http://audioboo.fm/account/services).
+Edit consumer_key.rb to include your API consumer key & secret.  You can obtain these from your [audioBoom services page](https://audioboom.com/account/services).
 
 Usage
 =====

@@ -1,4 +1,4 @@
-# Fill in your consumer API key & secret here.  You can obtain an API key from http://audioboo.fm/account/services
+# Fill in your consumer API key & secret here.  You can obtain an API key from https://audioboom.com/account/services
 KEY = ""
 SECRET = ""
 if KEY.empty?
